@@ -1,5 +1,6 @@
 package fi.beanbakers.tests;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -31,8 +32,21 @@ public class BeanBakersTests {
 	 * @return provided list reversed
 	 */
 	private <T> List<T> doReverseList(List<T> input) {
-		// TODO: Write code!
-		return Collections.emptyList();
+		// Specification is a bit vague; do we want to reverse the existing list
+		// in-place or do we want to allocate a new list?
+		// If we assume the former, with the given imports we could simply do:
+		//Collections.reverse(input);
+		//return input;
+
+		// But since the above is just calling a standard library function,
+		// let's create a new list manually.
+		// We needed to add "import java.util.ArrayList" for this.
+		List<T> output = new ArrayList<>(input.size());
+		for(int i = input.size() - 1; i >= 0; i--) {
+			output.add(input.get(i));
+		}
+
+		return output;
 	}
 
 	@Test
@@ -51,8 +65,22 @@ public class BeanBakersTests {
 	 * @return int array containing the calculated fibonacci sequence
 	 */
 	private int[] doFibonacciSequence(int sequenceLength) {
-		// TODO: Write code!
-		return new int[0];
+		int[] sequence = new int[sequenceLength];
+
+		// Make sure we don't index out-of-bounds in case someone wants
+		// a very short Fibonacci sequence.
+		if (sequenceLength >= 1) {
+			sequence[0] = 1;
+		}
+		if (sequenceLength >= 2) {
+			sequence[1] = 1;
+		}
+
+		for (int i = 2; i < sequenceLength; i++) {
+			sequence[i] = sequence[i-1] + sequence[i-2];
+		}
+
+		return sequence;
 	}
 
 	@Test
@@ -74,8 +102,12 @@ public class BeanBakersTests {
 	 * @return true if provided series ascends, false otherwise.
 	 */
 	private boolean isAscendingSeries(List<Integer> series) {
-		// TODO: Write code!
-		return false;
+		for (int i = 1; i < series.size(); i++) {
+			if (series.get(i-1) > series.get(i)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -86,7 +118,11 @@ public class BeanBakersTests {
 	 * @return true if the provided series descends, false otherwise.
 	 */
 	private boolean isDescendingSeries(List<Integer> series) {
-		// TODO: Write code!
-		return false;
+		for (int i = 1; i < series.size(); i++) {
+			if (series.get(i-1) < series.get(i)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
